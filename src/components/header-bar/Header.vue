@@ -1,26 +1,26 @@
 <template>
-  <view class="header-bar" v-if="props.show">
-    <view class="header-bar__block" :style="height"></view>
-    <view class="header-bar__fixed" :style="headerStyle">
-      <view class="header-bar__nav" :style="headerBarStyle">
+  <view class="header" v-if="props.show">
+    <view class="header__block" :style="height"></view>
+    <view class="header__fixed" :style="headerStyle">
+      <view class="header__nav" :style="headerBarStyle">
         <slot name="headerBar">
-          <view class="header-bar__content" :style="headerBarContentStyle">
+          <view class="header__content" :style="headerBarContentStyle">
             <!-- 返回按钮 -->
             <view
               v-if="props.isShowBack"
-              class="header-bar__back"
+              class="header__back"
               @click="back"
             >
-              <image class="header-bar__img" :src="backImageUrl"></image>
+              <image class="header__img" :src="backImageUrl"></image>
             </view>
 
-            <view v-if="isShowMenu" class="header-bar__menu" @click="showMenu">
+            <view v-if="isShowMenu" class="header__menu" @click="showMenu">
               <image
-                class="header-bar__img header-bar__img-menu"
+                class="header__img header__img-menu"
                 :src="menuImage"
               ></image>
-              <view class="header-bar__menu-dot"></view>
-              <view v-show="isShowMenuList" class="header-bar__menu-content">
+              <view class="header__menu-dot"></view>
+              <view v-show="isShowMenuList" class="header__menu-content">
                 <HeaderMenu
                   :unread="unread"
                 />
@@ -28,7 +28,7 @@
             </view>
 
             <slot name="headerTitle">
-              <text :style="headerBarTitleStyle" class="header-bar__title">{{
+              <text :style="headerBarTitleStyle" class="header__title">{{
                 props.title
               }}</text>
             </slot>
@@ -55,7 +55,7 @@ import { reactive, defineProps, computed, ref } from "vue";
 
 import { getSafeAreaInsertInfo, isTabBarUrl } from "@/utils/tools";
 
-import HeaderMenu from "./HeaderMenu.vue";
+import HeaderMenu from "./Menu.vue";
 
 const menuImage = `../../static/header-menu.png`;
 
@@ -235,7 +235,7 @@ const back = () => {
 </script>
 
 <style lang="scss" scoped>
-.header-bar {
+.header {
   &__fixed {
     position: fixed;
     top: 0;

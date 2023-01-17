@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import HeaderBar from '@/components/header-bar/HeaderBar.vue'
+import HeaderBar from '@/components/header-bar/Header.vue'
 </script>
 
 <style>

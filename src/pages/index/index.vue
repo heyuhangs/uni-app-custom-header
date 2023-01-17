@@ -14,7 +14,7 @@ import { ref } from "vue";
 
 import { navigationTo } from "@/utils/tools";
 
-import HeaderBar from "@/components/header-bar/HeaderBar.vue";
+import HeaderBar from "@/components/header-bar/Header.vue";
 
 const title = ref("Hello");
 

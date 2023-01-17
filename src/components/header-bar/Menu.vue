@@ -1,9 +1,9 @@
 <template>
-  <view class="header-menu">
-    <view v-for="(item, index) in list" :key="index" class="header-menu__item" @click="toPage(item)">
-      <image class="header-menu__img" :src="item.icon" />
-      <text class="header-menu__text">{{ item.title }}</text>
-      <text v-if="item.unread" class="header-menu__count">{{ item.unread }}</text>
+  <view class="menu">
+    <view v-for="(item, index) in list" :key="index" class="menu__item" @click="toPage(item)">
+      <image class="menu__img" :src="item.icon" />
+      <text class="menu__text">{{ item.title }}</text>
+      <text v-if="item.unread" class="menu__count">{{ item.unread }}</text>
     </view>
   </view>
 </template>
@@ -64,7 +64,7 @@ const toPage = (row: any) => {
 </script>
 
 <style lang="scss">
-.header-menu {
+.menu {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
