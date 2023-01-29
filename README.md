@@ -3,5 +3,5 @@
 </p>
 
 <p align="center">
-  Custom Header 自定义导航。
+  基于uni-app实现的自定义导航栏
 </p>
