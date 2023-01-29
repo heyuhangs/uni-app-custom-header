@@ -1,16 +1,12 @@
 <template>
-  <view class="header" v-if="props.show">
+  <view class="header">
     <view class="header__block" :style="height"></view>
     <view class="header__fixed" :style="headerStyle">
       <view class="header__nav" :style="headerBarStyle">
         <slot name="headerBar">
           <view class="header__content" :style="headerBarContentStyle">
             <!-- 返回按钮 -->
-            <view
-              v-if="props.isShowBack"
-              class="header__back"
-              @click="back"
-            >
+            <view v-if="props.isShowBack" class="header__back" @click="back">
               <image class="header__img" :src="backImageUrl"></image>
             </view>
 
@@ -21,9 +17,7 @@
               ></image>
               <view class="header__menu-dot"></view>
               <view v-show="isShowMenuList" class="header__menu-content">
-                <HeaderMenu
-                  :unread="unread"
-                />
+                <HeaderMenu :unread="unread" />
               </view>
             </view>
 
@@ -108,6 +102,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  /******** h5端，app端需要传入自定义导航栏高度 *******/
+  customNavHeight: {
+    type: Number,
+    default: 50,
+  },
 });
 
 const emit = defineEmits(["back"]);
@@ -116,7 +115,6 @@ let unread = ref(80);
 
 const safeAreaInsertState = reactive({
   navHeight: 0,
-  navigationBarHeight: 0,
   customHeight: 0,
   menubarLeft: 0,
   statusBarHeight: 0,
@@ -127,15 +125,22 @@ const init = () => {
   /* 获取设备信息 */
   const safeAreaInsertInfo: GetSafeAreaInsertInfoRes = getSafeAreaInsertInfo();
   /* 通用平台 */
-  safeAreaInsertState.statusBarHeight = safeAreaInsertInfo.statusBarHeight; //状态栏高度
+  safeAreaInsertState.navHeight = safeAreaInsertInfo.navHeight; //头部导航栏高度
 
   /* 微信小程序平台 */
   // #ifdef MP-WEIXIN
-  safeAreaInsertState.navHeight = safeAreaInsertInfo.navHeight;
-  safeAreaInsertState.navigationBarHeight = safeAreaInsertInfo.navHeight; //头部导航栏高度
+  safeAreaInsertState.statusBarHeight = safeAreaInsertInfo.statusBarHeight; //状态栏高度
   safeAreaInsertState.customHeight = safeAreaInsertInfo.menuButtonHeight; //胶囊高度
   safeAreaInsertState.menubarLeft = safeAreaInsertInfo.menuButtonLeft; //胶囊左边界距离左上角的距离
   safeAreaInsertState.menubarRight = safeAreaInsertInfo.menuButtonWidth;
+  // #endif
+
+  /* 通用平台 */
+  // #ifndef MP-WEIXIN
+  const customHeight =
+    props.customNavHeight * safeAreaInsertInfo.scaleFactor +
+    safeAreaInsertInfo.statusBarHeight;
+  safeAreaInsertState.navHeight = safeAreaInsertState.customHeight = customHeight;
   // #endif
 };
 
@@ -175,7 +180,7 @@ const headerBarStyle = computed(() => {
     : "0rpx";
 
   return {
-    height: `${safeAreaInsertState.navigationBarHeight}rpx`,
+    height: `${safeAreaInsertState.navHeight}rpx`,
     top: `${safeAreaInsertState.statusBarHeight}rpx`,
     paddingRight,
   };

@@ -15,13 +15,19 @@ let safeAreaInsertInfo = {
   navHeight: 0,
 } as GetSafeAreaInsertInfoRes;
 
-
 export const getSafeAreaInsertInfo = (): GetSafeAreaInsertInfoRes => {
-  return safeAreaInsertInfo
+  return safeAreaInsertInfo;
 };
 
 export const initSafeAreaInsert = () => {
   let navHeight = 0;
+
+  let menuButtonHeight = 0;
+  let menuButtonWidth = 0;
+  let menuButtonTop = 0;
+  let menuButtonRight = 0;
+  let menuButtonBottom = 0;
+  let menuButtonLeft = 0;
   /****************** 所有平台共有的系统信息 ********************/
   // 设备系统信息
   const systemInfo: UniApp.GetSystemInfoResult = uni.getSystemInfoSync();
@@ -39,41 +45,47 @@ export const initSafeAreaInsert = () => {
   const safeAreaInserts: UniApp.GetMenuButtonBoundingClientRectRes =
     uni.getMenuButtonBoundingClientRect();
   // 胶囊高度
-  const menuButtonHeight: number = safeAreaInserts.height * scaleFactor;
+  menuButtonHeight = safeAreaInserts.height * scaleFactor;
   // 胶囊宽度
-  const menuButtonWidth: number = safeAreaInserts.width * scaleFactor;
+  menuButtonWidth = safeAreaInserts.width * scaleFactor;
   // 胶囊上边界的坐标
-  const menuButtonTop: number = safeAreaInserts.top * scaleFactor;
+  menuButtonTop = safeAreaInserts.top * scaleFactor;
   // 胶囊右边界的坐标
-  const menuButtonRight: number = safeAreaInserts.right * scaleFactor;
+  menuButtonRight = safeAreaInserts.right * scaleFactor;
   // 胶囊下边界的坐标
-  const menuButtonBottom: number = safeAreaInserts.bottom * scaleFactor;
+  menuButtonBottom = safeAreaInserts.bottom * scaleFactor;
   // 胶囊左边界的坐标
-  const menuButtonLeft: number = safeAreaInserts.left * scaleFactor;
+  menuButtonLeft = safeAreaInserts.left * scaleFactor;
 
   // 微信小程序中导航栏高度 = 胶囊高度 + (顶部距离 - 状态栏高度) * 2
   // ** 其他平台如自定义导航栏请使用：状态栏高度+自定义文本高度
   navHeight = menuButtonHeight + (menuButtonTop - statusBarHeight) * 2;
   // #endif
 
+
+  /****************** 通用平台 ********************/
+  // #ifndef MP-WEIXIN
+  navHeight = systemInfo.statusBarHeight;
+  // #endif
+
   // 除去headerBar内容的高度
   const windowContentHeight: number = windowHeight - navHeight;
 
   safeAreaInsertInfo = {
-    scaleFactor,
-    windowHeight,
-    windowWidth,
-    windowContentHeight,
-    statusBarHeight,
-    menuButtonHeight,
-    menuButtonWidth,
-    menuButtonTop,
-    menuButtonRight,
-    menuButtonBottom,
-    menuButtonLeft,
-    navHeight
-  }
-}
+    scaleFactor: scaleFactor,
+    windowHeight: windowHeight,
+    windowWidth: windowWidth,
+    windowContentHeight: windowContentHeight,
+    statusBarHeight: statusBarHeight,
+    menuButtonHeight: menuButtonHeight,
+    menuButtonWidth: menuButtonWidth,
+    menuButtonTop: menuButtonTop,
+    menuButtonRight: menuButtonRight,
+    menuButtonBottom: menuButtonBottom,
+    menuButtonLeft: menuButtonLeft,
+    navHeight: navHeight
+  };
+};
 
 export const isTabBarUrl = (url: string): boolean => {
   if (!url) return false;
